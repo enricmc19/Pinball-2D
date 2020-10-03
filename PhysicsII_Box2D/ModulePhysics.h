@@ -16,4 +16,8 @@ public:
 private:
 
 	bool debug;
+	b2World *world;
+	float timeStep;
+	int32 velocityIterations;
+	int32 positionIterations;
 };

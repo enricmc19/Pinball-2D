@@ -4,10 +4,12 @@
 #include "math.h"
 
 // TODO 1: Include Box 2 header and library
+#include "Box2D/Box2D/Box2D.h"
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	debug = true;
+	
 }
 
 // Destructor
@@ -24,6 +26,8 @@ bool ModulePhysics::Start()
 	// - You need init the world in the constructor
 	// - Remember to destroy the world after using it
 
+	b2Vec2 gravity(0.0f, -10.0f);	
+	world = new b2World(gravity);
 
 	// TODO 4: Create a a big static circle as "ground"
 	return true;
@@ -33,6 +37,15 @@ bool ModulePhysics::Start()
 update_status ModulePhysics::PreUpdate()
 {
 	// TODO 3: Update the simulation ("step" the world)
+	timeStep = 1.0f / 60.0f;
+	velocityIterations = 8;
+	positionIterations = 3;
+
+	for (int32 i = 0; i < 60; i++)
+	{
+		world->Step(timeStep, velocityIterations, positionIterations);
+	}
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -81,6 +94,7 @@ bool ModulePhysics::CleanUp()
 	LOG("Destroying physics world");
 
 	// Delete the whole physics world!
+	delete(world);
 
 	return true;
 }
