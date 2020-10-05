@@ -32,18 +32,33 @@ bool ModulePhysics::Start()
 
 
 	// TODO 4: Create a a big static circle as "ground"
+	b2BodyDef circleBodyDef;
+	circleBodyDef.position.Set(0.0f, -10.0f);
+	b2Body *groundCircle = world->CreateBody(&circleBodyDef);
+
+	b2CircleShape circle;
+	circle.m_p.Set(2.0f, 3.0f);
+	circle.m_radius = 0.5f;
+
+	groundCircle->CreateFixture(&circle, 0.0f);
+
 	return true;
 }
 
-// 
 update_status ModulePhysics::PreUpdate()
 {
 	// TODO 3: Update the simulation ("step" the world)
+	float timeStep = 1.0f / 60.0f;
+	int32 velocityIterations = 8;
+	int32 positionIterations = 2;
+
+	world->Step(timeStep, velocityIterations, positionIterations);		
+	
+
 
 	return UPDATE_CONTINUE;
 }
-
-// 
+ 
 update_status ModulePhysics::PostUpdate()
 {
 	// TODO 5: On space bar press, create a circle on mouse position
@@ -57,7 +72,7 @@ update_status ModulePhysics::PostUpdate()
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
-	/*
+	
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
 		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
@@ -75,7 +90,7 @@ update_status ModulePhysics::PostUpdate()
 				// You will have to add more cases to draw boxes, edges, and polygons ...
 			}
 		}
-	}*/
+	}
 
 	return UPDATE_CONTINUE;
 }
