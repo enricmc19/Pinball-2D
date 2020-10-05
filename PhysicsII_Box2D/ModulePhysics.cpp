@@ -33,12 +33,12 @@ bool ModulePhysics::Start()
 
 	// TODO 4: Create a a big static circle as "ground"
 	b2BodyDef circleBodyDef;
-	circleBodyDef.position.Set(0.0f, -10.0f);
+	circleBodyDef.position.Set(1024.0f / 2.0f, 758.0f / 2.0f);
 	b2Body *groundCircle = world->CreateBody(&circleBodyDef);
 
 	b2CircleShape circle;
-	circle.m_p.Set(2.0f, 3.0f);
-	circle.m_radius = 0.5f;
+	circle.m_p.Set(0.0f, 0.0f);
+	circle.m_radius = 1000.0f;
 
 	groundCircle->CreateFixture(&circle, 0.0f);
 
