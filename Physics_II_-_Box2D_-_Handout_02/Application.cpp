@@ -1,3 +1,14 @@
+
+#include "Module.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "ModuleTextures.h"
+#include "ModuleInput.h"
+#include "ModuleAudio.h"
+#include "ModulePlayer.h"
+#include "ModulePhysics.h"
+#include "ModuleSceneIntro.h"
+
 #include "Application.h"
 
 Application::Application()
@@ -6,7 +17,7 @@ Application::Application()
 	window = new ModuleWindow(this);
 	textures = new ModuleTextures(this);
 	input = new ModuleInput(this);
-	audio = new ModuleAudio(this, true);
+	audio = new ModuleAudio(this, false);
 	player = new ModulePlayer(this);
 	scene_intro = new ModuleSceneIntro(this);
 	physics = new ModulePhysics(this);
