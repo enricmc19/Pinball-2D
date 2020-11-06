@@ -15,8 +15,8 @@
 
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	world = NULL;
-	debug = true;
+	pkmWorld = NULL;
+	debug = false;
 }
 
 // Destructor
@@ -28,25 +28,65 @@ bool ModulePhysics::Start()
 {
 	LOG("Creating Physics 2D environment");
 
-	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+	pkmWorld = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+	
+	b2BodyDef boundBodyDef;
+	boundBodyDef.type = b2_staticBody;
+	boundBodyDef.position.Set(0, 0);
 
-	// big static circle as "ground" in the middle of the screen
-	int x = SCREEN_WIDTH / 2;
-	int y = SCREEN_HEIGHT / 1.5f;
-	int diameter = SCREEN_WIDTH / 2;
+	b2Body* boundBody = pkmWorld->CreateBody(&boundBodyDef);
 
-	b2BodyDef body;
-	body.type = b2_staticBody;
-	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	b2ChainShape boundShape;
 
-	b2Body* b = world->CreateBody(&body);
+	b2Vec2* boundVec = new b2Vec2[62 / 2];
+	// Boundary Vertex array
+	int pinballArr[62] = {
+		207, 1023,
+		80, 940,
+		62, 937,
+		30, 910,
+		30, 762,
+		48, 731,
+		86, 720,
+		86, 598,
+		53, 544,
+		28, 463,
+		22, 401,
+		21, 316,
+		31, 242,
+		57, 160,
+		106, 96,
+		155, 61,
+		226, 29,
+		317, 20,
+		375, 20,
+		444, 40,
+		498, 67,
+		574, 136,
+		603, 182,
+		626, 231,
+		638, 273,
+		640, 1024,
+		700, 1024,
+		700, 0,
+		0, 0,
+		0, 1024,
+		180, 1024
+	};
 
-	b2CircleShape shape;
-	shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
+	for (uint i = 0; i < 62/2; ++i)
+	{
+		boundVec[i].x = PIXEL_TO_METERS(pinballArr[i * 2 + 0]);
+		boundVec[i].y = PIXEL_TO_METERS(pinballArr[i * 2 + 1]);
+	}
 
-	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	b->CreateFixture(&fixture);
+	boundShape.CreateLoop(boundVec, 62 / 2);
+
+	b2FixtureDef boundFixture;
+	boundFixture.shape = &boundShape;
+	boundBody->CreateFixture(&boundFixture);
+
+	delete boundVec;
 
 	return true;
 }
@@ -54,7 +94,7 @@ bool ModulePhysics::Start()
 // 
 update_status ModulePhysics::PreUpdate()
 {
-	world->Step(1.0f / 60.0f, 6, 2);
+	pkmWorld->Step(1.0f / 60.0f, 6, 2);
 
 	return UPDATE_CONTINUE;
 }
@@ -70,7 +110,7 @@ update_status ModulePhysics::PostUpdate()
 		float radius = PIXEL_TO_METERS(25);
 		body.position.Set(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
 
-		b2Body* b = world->CreateBody(&body);
+		b2Body* b = pkmWorld->CreateBody(&body);
 
 		b2CircleShape shape;
 		shape.m_radius = radius;
@@ -117,7 +157,7 @@ update_status ModulePhysics::PostUpdate()
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
-	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	for(b2Body* b = pkmWorld->GetBodyList(); b; b = b->GetNext())
 	{
 		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
 		{
@@ -197,7 +237,7 @@ bool ModulePhysics::CleanUp()
 	LOG("Destroying physics world");
 
 	// Delete the whole physics world!
-	delete world;
+	delete pkmWorld;
 
 	return true;
 }

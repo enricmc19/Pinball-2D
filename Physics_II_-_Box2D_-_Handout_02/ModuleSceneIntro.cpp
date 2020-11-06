@@ -8,7 +8,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = box = rick = NULL;
+	pinballRec = nullptr;
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -22,27 +22,29 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	circle = App->textures->Load("pinball/wheel.png"); 
-	box = App->textures->Load("pinball/crate.png");
-	rick = App->textures->Load("pinball/rick_head.png");
+
+	pinballRec = new SDL_Rect{ 0,0,700,1024 };
+	pinballTex = App->textures->Load("Assets/pinballText.png");
+
 
 	return ret;
-}
-
-// Load assets
-bool ModuleSceneIntro::CleanUp()
-{
-	LOG("Unloading Intro scene");
-
-	return true;
 }
 
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	// TODO 5: Move all creation of bodies on 1,2,3 key press here in the scene
-	
-	// TODO 7: Draw all the circles using "circle" texture
+	App->renderer->Blit(pinballTex, 0, 0, pinballRec, SCREEN_SIZE);
 
-	return UPDATE_CONTINUE;
+	
+		return UPDATE_CONTINUE;
 }
+
+// Unload assets
+bool ModuleSceneIntro::CleanUp()
+{
+	LOG("Unloading Intro scene");
+	App->textures->Unload(pinballTex);
+
+	return true;
+}
+

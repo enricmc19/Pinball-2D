@@ -31,10 +31,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	// TODO 4: Move body creation to 3 functions to create circles, rectangles and chains
-
-private:
-
+private:	
+	b2World* pkmWorld;
 	bool debug;
-	b2World* world;
 };
