@@ -38,9 +38,11 @@ bool ModulePhysics::Start()
 
 	b2ChainShape boundShape;
 
-	b2Vec2* boundVec = new b2Vec2[62 / 2];
+	b2Vec2* boundVec = new b2Vec2[132 / 2];
 	// Boundary Vertex array
-	int pinballArr[62] = {
+	int pinballArr[132] = {
+		/* Coordenadas antiguas
+		
 		207, 1023,
 		80, 940,
 		62, 937,
@@ -71,16 +73,84 @@ bool ModulePhysics::Start()
 		700, 0,
 		0, 0,
 		0, 1024,
-		180, 1024
+		180, 1024*/
+
+		//Coordenadas nuevas
+		202, 1022,
+	76, 938,
+	28, 905,
+	28, 764,
+	30, 750,
+	40, 732,
+	54, 724,
+	66, 720,
+	81, 714,
+	85, 602,
+	68, 578,
+	57, 561,
+	46, 544,
+	38, 521,
+	29, 492,
+	24, 466,
+	21, 438,
+	20, 402,
+	20, 310,
+	24, 278,
+	25, 248,
+	38, 210,
+	85, 118,
+	116, 81,
+	160, 49,
+	198, 33,
+	242, 17,
+	264, 13,
+	365, 14,
+	413, 26,
+	437, 33,
+	481, 50,
+	508, 69,
+	524, 85,
+	545, 104,
+	564, 118,
+	576, 137,
+	593, 154,
+	608, 182,
+	620, 213,
+	637, 264,
+	637, 1022,
+	582, 1021,
+	582, 294,
+	576, 272,
+	573, 253,
+	564, 225,
+	549, 198,
+	526, 169,
+	534, 190,
+	544, 218,
+	550, 254,
+	553, 282,
+	557, 318,
+	560, 404,
+	554, 441,
+	550, 473,
+	544, 509,
+	529, 548,
+	497, 600,
+	496, 710,
+	517, 718,
+	542, 732,
+	553, 754,
+	552, 909,
+	378, 1020
 	};
 
-	for (uint i = 0; i < 62/2; ++i)
+	for (uint i = 0; i < 132/2; ++i)
 	{
 		boundVec[i].x = PIXEL_TO_METERS(pinballArr[i * 2 + 0]);
 		boundVec[i].y = PIXEL_TO_METERS(pinballArr[i * 2 + 1]);
 	}
 
-	boundShape.CreateLoop(boundVec, 62 / 2);
+	boundShape.CreateLoop(boundVec, 132 / 2);
 
 	b2FixtureDef boundFixture;
 	boundFixture.shape = &boundShape;
