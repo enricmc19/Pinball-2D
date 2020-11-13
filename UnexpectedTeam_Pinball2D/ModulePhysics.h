@@ -14,6 +14,23 @@
 class b2World;
 class b2Body;
 
+class PhysBody
+{
+public:
+	PhysBody() : listener(NULL), body(NULL)
+	{}
+
+	void GetPosition(int& x, int& y) const;
+	float GetRotation() const;
+	bool Contains(int x, int y) const;
+	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
+
+public:
+	int width, height;
+	b2Body* body;
+	Module* listener;
+};
+
 class ModulePhysics : public Module
 {
 public:
@@ -25,10 +42,14 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
+	// Joints
+	PhysBody *spring, springPivot;
+
 private:	
 	b2World* pkmWorld;
 	bool debug;
 
 	// Boundary Functions
-	void CreateBoundary(b2World *world);
+	PhysBody* CreateBoundary(b2World *world);
+	PhysBody* CreateSpring(b2World *world);
 };

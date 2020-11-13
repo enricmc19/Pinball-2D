@@ -28,7 +28,7 @@ class b2Shape;
 /// It encapsulates any shape.
 struct b2DistanceProxy
 {
-	b2DistanceProxy() : m_vertices(NULL), m_count(0), m_radius(0.0f) {}
+	b2DistanceProxy() : m_vertices(NULL), m_count(0), radius(0.0f) {}
 
 	/// Initialize the proxy using the given shape. The shape
 	/// must remain in scope while the proxy is in use.
@@ -49,7 +49,7 @@ struct b2DistanceProxy
 	b2Vec2 m_buffer[2];
 	const b2Vec2* m_vertices;
 	int32 m_count;
-	float32 m_radius;
+	float32 radius;
 };
 
 /// Used to warm start b2Distance.
