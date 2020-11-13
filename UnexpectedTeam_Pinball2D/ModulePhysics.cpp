@@ -5,7 +5,7 @@
 #include "ModulePhysics.h"
 #include "math.h"
 
-#include "Box2D/Box2D/Box2D.h"
+
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -29,8 +29,13 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	pkmWorld = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
-	CreateBoundary(pkmWorld);
-	CreateSpring(pkmWorld);
+	//pkmWorld->SetContactListener(this);
+
+	CreateBoundary();
+	
+	spring = CreateRectangle(612, 950, 46, 20, b2_dynamicBody);
+	springPivot = CreateRectangle(612, 1018, 46, 10, b2_staticBody);
+	App->physics->CreatePrismaticJoint(spring, springPivot);
 	
 	return true;
 }
@@ -135,7 +140,7 @@ bool ModulePhysics::CleanUp()
 	return true;
 }
 
-PhysBody* ModulePhysics::CreateBoundary(b2World *pkmWorld)
+PhysBody* ModulePhysics::CreateBoundary()
 {
 	// 1a Boundary
 	b2BodyDef boundBodyDef;
@@ -147,7 +152,7 @@ PhysBody* ModulePhysics::CreateBoundary(b2World *pkmWorld)
 	b2ChainShape boundShape;
 
 	b2Vec2* boundVec = new b2Vec2[116 / 2];
-	// Boundary Vertex array 1
+	// Boundary Vertex array 
 	int pinballBound[116] =
 	{
 	378, 1022,
@@ -233,52 +238,46 @@ PhysBody* ModulePhysics::CreateBoundary(b2World *pkmWorld)
 	return pboundBody;
 }
 
-PhysBody* ModulePhysics::CreateSpring(b2World* pkmWorld)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type)
 {
-	// Dynamic
-	b2BodyDef springBodyDef;
-	springBodyDef.type = b2_dynamicBody;
-	springBodyDef.position.Set(PIXEL_TO_METERS(611), PIXEL_TO_METERS(990));
+	b2BodyDef body;
+	body.type = type;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
-	b2Body* springBody = pkmWorld->CreateBody(&springBodyDef);
+	b2Body* b = pkmWorld->CreateBody(&body);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 
-	b2CircleShape springShape;
-	springShape.m_radius = PIXEL_TO_METERS(5);
-	b2FixtureDef springFixture;
-	springFixture.shape = &springShape;
-	springFixture.density = 1.0f;
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 1.0f;
 
-	springBody->CreateFixture(&springFixture);
+	b->CreateFixture(&fixture);
 
-	//Static Pivot
-	b2BodyDef pivotBodyDef;
-	pivotBodyDef.position.Set(PIXEL_TO_METERS(611), PIXEL_TO_METERS(1013));
-	b2Body* pivotBody = pkmWorld->CreateBody(&pivotBodyDef);
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = width * 0.5f;
+	pbody->height = height * 0.5f;
 
-	b2PolygonShape pivotShape;
-	pivotShape.SetAsBox(PIXEL_TO_METERS(50) * 0.5f, PIXEL_TO_METERS(20) * 0.5f);
-	pivotBody->CreateFixture(&pivotShape, 0.0f);
+	return pbody;
+}
 
-	// Prismatic Joint
-	b2PrismaticJointDef jointDef;
-	b2Vec2 worldAxis(1.0f, 0.0f);
-	jointDef.Initialize(pivotBody, springBody, pivotBody->GetWorldCenter(), worldAxis);
-	jointDef.lowerTranslation = -5.0f;
-	jointDef.upperTranslation = 2.5f;
-	jointDef.enableLimit = true;
-	jointDef.maxMotorForce = 1.0f;
-	jointDef.motorSpeed = 0.0f;
-	jointDef.enableMotor = true;
+void ModulePhysics::CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody)
+{
 
+	b2PrismaticJointDef prismaticJoint;
+	prismaticJoint.collideConnected = true;
+	prismaticJoint.bodyA = spring->body;
+	prismaticJoint.bodyB = springPivot->body;
 
-
-	// Returning a PhysBody
-	PhysBody* pSpringBody = new PhysBody();
-	pSpringBody->body = springBody;
-	springBody->SetUserData(pSpringBody);
-	pSpringBody->width = pSpringBody->height = 0;
-
-	return pSpringBody;
+	prismaticJoint.localAnchorA.Set(0, 0);
+	prismaticJoint.localAnchorB.Set(0, -1);
+	prismaticJoint.localAxisA.Set(0, -1);
+	prismaticJoint.enableLimit = true;
+	prismaticJoint.lowerTranslation = -0.02;
+	prismaticJoint.upperTranslation = 1.0;
+	(b2PrismaticJoint*)pkmWorld->CreateJoint(&prismaticJoint);
 }
 
 void PhysBody::GetPosition(int& x, int& y) const

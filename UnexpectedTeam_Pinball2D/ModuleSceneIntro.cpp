@@ -35,8 +35,22 @@ update_status ModuleSceneIntro::Update()
 {
 	App->renderer->Blit(pinballTex, 0, 0, pinballRec, SCREEN_SIZE);
 
+	// Spring Texture Blit
+	int sPositionX, sPositionY;
+	App->physics->spring->GetPosition(sPositionX, sPositionY);
+	//App->renderer->Blit(springText, sPositionX, sPositionY, NULL, 1.0f);
+	App->physics->spring->body->ApplyForce({ 0,-5 }, { 0, 0 }, true);
 	
-		return UPDATE_CONTINUE;
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		App->physics->spring->body->ApplyForce({ 0,18 }, { 0, 0 }, true);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+	{
+		App->physics->spring->body->ApplyForce({ 0,-180 }, { 0, 0 }, true);
+	}
+
+	return UPDATE_CONTINUE;
 }
 
 // Unload assets

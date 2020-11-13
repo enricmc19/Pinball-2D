@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "Box2D/Box2D/Box2D.h"
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -43,13 +44,17 @@ public:
 	bool CleanUp();
 
 	// Joints
-	PhysBody *spring, springPivot;
+	PhysBody *spring, *springPivot;
 
 private:	
 	b2World* pkmWorld;
 	bool debug;
 
-	// Boundary Functions
-	PhysBody* CreateBoundary(b2World *world);
-	PhysBody* CreateSpring(b2World *world);
+	// Boundary Creation
+	PhysBody* CreateBoundary();
+
+	// Spring Creation
+	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type);
+	void CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody);
+
 };
