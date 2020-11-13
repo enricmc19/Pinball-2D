@@ -17,5 +17,7 @@ public:
 
 public:
 	SDL_Texture* pinballTex;	
-	SDL_Rect* pinballRec;	
+	SDL_Rect* pinballRec;
+
+	SDL_Texture* springTex;
 };

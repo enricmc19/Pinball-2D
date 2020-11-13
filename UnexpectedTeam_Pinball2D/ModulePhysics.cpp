@@ -29,7 +29,6 @@ bool ModulePhysics::Start()
 	LOG("Creating Physics 2D environment");
 
 	pkmWorld = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
-	//pkmWorld->SetContactListener(this);
 
 	CreateBoundary();
 	
