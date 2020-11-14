@@ -31,10 +31,9 @@ bool ModulePhysics::Start()
 	pkmWorld = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 
 	CreateBoundary();
-	
-	spring = CreateRectangle(612, 950, 46, 20, b2_dynamicBody);
-	springPivot = CreateRectangle(612, 1018, 46, 10, b2_staticBody);
-	App->physics->CreatePrismaticJoint(spring, springPivot);
+	spring = CreateRectangle(429, 710, 36, 15, b2_dynamicBody);
+	springPivot = CreateRectangle(429, 723, 36, 10, b2_staticBody);
+	CreatePrismaticJoint(spring, springPivot);
 	
 	return true;
 }
@@ -53,8 +52,7 @@ update_status ModulePhysics::PostUpdate()
 	if(!debug)
 		return UPDATE_CONTINUE;
 
-	// Bonus code: this will iterate all objects in the world and draw the circles
-	// You need to provide your own macro to translate meters to pixels
+	// This will iterate all objects in the world and draw the circles
 	for(b2Body* b = pkmWorld->GetBodyList(); b; b = b->GetNext())
 	{
 		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
@@ -139,6 +137,7 @@ bool ModulePhysics::CleanUp()
 	return true;
 }
 
+//Creation Functions
 PhysBody* ModulePhysics::CreateBoundary()
 {
 	// 1a Boundary
@@ -150,77 +149,79 @@ PhysBody* ModulePhysics::CreateBoundary()
 
 	b2ChainShape boundShape;
 
-	b2Vec2* boundVec = new b2Vec2[116 / 2];
+	b2Vec2* boundVec = new b2Vec2[120 / 2];
 	// Boundary Vertex array 
-	int pinballBound[116] =
+	int pinballBound[120] = 
 	{
-	378, 1022,
-	500, 940,
-	513, 942,
-	536, 924,
-	553, 906,
-	553, 770,
-	542, 741,
-	520, 725,
-	497, 718,
-	497, 604,
-	521, 566,
-	543, 514,
-	557, 446,
-	564, 383,
-	561, 310,
-	553, 246,
-	542, 203,
-	528, 165,
-	550, 187,
-	563, 217,
-	574, 247,
-	585, 295,
-	585, 1025,
-	640, 1025,
-	640, 277,
-	627, 228,
-	608, 184,
-	576, 134,
-	528, 86,
-	453, 41,
-	412, 29,
-	372, 21,
-	264, 21,
-	204, 36,
-	162, 54,
-	128, 76,
-	86, 119,
-	50, 173,
-	34, 228,
-	25, 277,
-	21, 320,
-	21, 404,
-	23, 442,
-	29, 476,
-	42, 522,
-	62, 568,
-	87, 603,
-	87, 717,
-	59, 725,
-	37, 741,
-	27, 765,
-	27, 910,
-	46, 926,
-	72, 944,
-	81, 940,
-	208, 1024,
-	208, 1079,
-	379, 1079
+	265, 717,
+	353, 657,
+	357, 660,
+	373, 650,
+	388, 636,
+	388, 537,
+	380, 518,
+	366, 507,
+	349, 504,
+	349, 419,
+	361, 404,
+	373, 384,
+	383, 354,
+	389, 330,
+	391, 308,
+	394, 283,
+	394, 224,
+	392, 197,
+	387, 166,
+	379, 138,
+	370, 113,
+	385, 133,
+	393, 150,
+	403, 178,
+	409, 206,
+	409, 720,
+	449, 720,
+	449, 187,
+	442, 163,
+	424, 121,
+	403, 91,
+	380, 67,
+	346, 45,
+	307, 26,
+	259, 15,
+	184, 15,
+	138, 26,
+	104, 45,
+	73, 70,
+	43, 106,
+	26, 147,
+	18, 190,
+	14, 221,
+	14, 283,
+	19, 327,
+	27, 363,
+	40, 393,
+	61, 423,
+	61, 502,
+	40, 509,
+	28, 520,
+	20, 537,
+	20, 633,
+	33, 647,
+	53, 664,
+	56, 655,
+	143, 716,
+	143, 769,
+	266, 769,
+	266, 733
 	};
 
-	for (uint i = 0; i < 116 / 2; ++i)
+	for (uint i = 0; i < 120 / 2; ++i)
 	{
 		boundVec[i].x = PIXEL_TO_METERS(pinballBound[i * 2 + 0]);
 		boundVec[i].y = PIXEL_TO_METERS(pinballBound[i * 2 + 1]);
 	}
 
-	boundShape.CreateLoop(boundVec, 116 / 2);
+	boundShape.CreateLoop(boundVec, 120 / 2);
 
 	b2FixtureDef boundFixture;
 	boundFixture.shape = &boundShape;
@@ -279,6 +280,31 @@ void ModulePhysics::CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* static
 	(b2PrismaticJoint*)pkmWorld->CreateJoint(&prismaticJoint);
 }
 
+PhysBody* ModulePhysics::CreatePlayer(int x, int y, int radius)
+{
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = pkmWorld->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 0.2;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+
+	return pbody;
+}
+
+// PhysBody useful functions
 void PhysBody::GetPosition(int& x, int& y) const
 {
 	b2Vec2 position = body->GetPosition();

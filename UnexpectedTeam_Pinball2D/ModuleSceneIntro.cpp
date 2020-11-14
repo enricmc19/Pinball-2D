@@ -22,8 +22,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-
-	pinballRec = new SDL_Rect{ 0,0,700,1024 };
+	pinballRec = new SDL_Rect{ 0,0,490,717 };
 	pinballTex = App->textures->Load("Assets/pinballTex.png");
 	springTex = App->textures->Load("Assets/springTex.png");
 
@@ -37,18 +36,18 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(pinballTex, 0, 0, pinballRec, SCREEN_SIZE);
 
 	// Spring Texture Blit + Physics
-	int sPositionX, sPositionY;
-	App->physics->spring->GetPosition(sPositionX, sPositionY);
-	App->renderer->Blit(springTex, sPositionX, sPositionY, NULL, 1.0f);
+	int sPosX, sPosY;
+	App->physics->spring->GetPosition(sPosX, sPosY);
+	App->renderer->Blit(springTex, sPosX, sPosY, NULL, 1.0f);
 
 	App->physics->spring->body->ApplyForce({ 0,-5 }, { 0, 0 }, true);
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		App->physics->spring->body->ApplyForce({0,15}, {0,0}, true);
+		App->physics->spring->body->ApplyForce({0,10}, {0,0}, true);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
-		App->physics->spring->body->ApplyForce({0,-200}, {0,0}, true);
+		App->physics->spring->body->ApplyForce({0,-350}, {0,0}, true);
 	}
 
 	return UPDATE_CONTINUE;

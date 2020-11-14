@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "ModulePhysics.h"
 
 class ModulePlayer : public Module
 {
@@ -14,5 +15,10 @@ public:
 	bool CleanUp();
 
 public:
+	PhysBody* player;
 
+	// Ball Creation
+	bool ballCreation = true;
+	//p2List<PhysBody*> circles;
+	SDL_Texture* masterBallTex;
 };

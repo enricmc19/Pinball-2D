@@ -45,6 +45,8 @@ public:
 
 	// Joints
 	PhysBody *spring, *springPivot;
+	PhysBody *ball;
+
 
 private:	
 	b2World* pkmWorld;
@@ -57,4 +59,7 @@ private:
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type);
 	void CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody);
 
+	public:
+	// Ball Creation
+	PhysBody* CreatePlayer(int x, int y, int radius);
 };
