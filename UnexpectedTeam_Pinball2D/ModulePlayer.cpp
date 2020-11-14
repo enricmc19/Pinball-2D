@@ -15,6 +15,13 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
+	masterBallTex = App->textures->Load("Assets/masterBallTex.png");
+	return true;
+}
+
+// Update: draw background
+update_status ModulePlayer::Update()
+{
 	if (ballCreation == true)
 	{
 		player = (App->physics->CreatePlayer(429, 615, 15));
@@ -22,18 +29,16 @@ bool ModulePlayer::Start()
 	}
 	player->body->SetBullet(true);
 
-	masterBallTex = App->textures->Load("Assets/masterBallTex.png");
-
-	return true;
-}
-
-// Update: draw background
-update_status ModulePlayer::Update()
-{
 	int playerPosX, playerPosY;
 	player->GetPosition(playerPosX, playerPosY);
 	App->renderer->Blit(masterBallTex, playerPosX, playerPosY, NULL, 1.0f, player->GetRotation());
 	
+	if (player->body->GetPosition().y * 50 > 720)
+	{
+		player->body->GetWorld()->DestroyBody(player->body);
+		ballCreation = true;
+	}
+
 	return UPDATE_CONTINUE;
 }
 

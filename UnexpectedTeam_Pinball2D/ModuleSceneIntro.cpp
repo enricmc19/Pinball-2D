@@ -1,9 +1,10 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-#include "ModuleSceneIntro.h"
-#include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleInput.h"
+#include "ModuleAudio.h"
+#include "ModuleSceneIntro.h"
 #include "ModulePhysics.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -26,6 +27,7 @@ bool ModuleSceneIntro::Start()
 	pinballTex = App->textures->Load("Assets/pinballTex.png");
 	springTex = App->textures->Load("Assets/springTex.png");
 
+	throwFx = App->audio->LoadFx("Assets/shootFx.ogg");
 
 	return ret;
 }
@@ -48,6 +50,7 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
 		App->physics->spring->body->ApplyForce({0,-350}, {0,0}, true);
+		App->audio->PlayFx(throwFx, 0);
 	}
 
 	return UPDATE_CONTINUE;

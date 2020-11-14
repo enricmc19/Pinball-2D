@@ -20,4 +20,6 @@ public:
 	SDL_Rect* pinballRec;
 
 	SDL_Texture* springTex;
+
+	int throwFx;
 };
