@@ -24,10 +24,11 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	pinballRec = new SDL_Rect{ 0,0,490,717 };
-	pinballTex = App->textures->Load("Assets/pinballTex.png");
-	springTex = App->textures->Load("Assets/springTex.png");
+	pinballTex = App->textures->Load("Assets/Textures/pinballTex.png");
+	springTex = App->textures->Load("Assets/Textures/springTex.png");
 
-	throwFx = App->audio->LoadFx("Assets/shootFx.ogg");
+	throwFx = App->audio->LoadFx("Assets/Sound/shootFx.wav");
+	App->audio->PlayMusic("Assets/Sound/city.ogg");
 
 	return ret;
 }
@@ -49,8 +50,8 @@ update_status ModuleSceneIntro::Update()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
-		App->physics->spring->body->ApplyForce({0,-350}, {0,0}, true);
-		App->audio->PlayFx(throwFx, 0);
+		App->physics->spring->body->ApplyForce({0,-230}, {0,0}, true);
+		App->audio->PlayFx(throwFx);
 	}
 
 	return UPDATE_CONTINUE;
