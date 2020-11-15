@@ -99,7 +99,7 @@ bool ModulePhysics::Start()
 	169, 107,
 	166, 103
 	};
-	lTopCol = CreateChain(0, 0, lTop, 16,2);
+	lTopCol = CreateChain(0, 0, lTop, 16,1);
 	int rTop[16] = {
 	227, 66,
 	230, 62,
@@ -110,7 +110,7 @@ bool ModulePhysics::Start()
 	230, 107,
 	227, 103
 	};
-	rTopCol = CreateChain(0, 0, rTop, 16,2);
+	rTopCol = CreateChain(0, 0, rTop, 16,1);
 
 	int lTriang[16] = {
 	98, 543,
@@ -122,7 +122,7 @@ bool ModulePhysics::Start()
 	128, 607,
 	127, 600
 	};
-	lTriangCol = CreateChain(0, 0, lTriang, 16.2);
+	lTriangCol = CreateChain(0, 0, lTriang, 16);
 	int rTriang[16] = {
 	317, 582,
 	317, 546,
@@ -133,7 +133,7 @@ bool ModulePhysics::Start()
 	296, 597,
 	308, 588
 	};
-	rTriangCol = CreateChain(0, 0, rTriang, 16,2);
+	rTriangCol = CreateChain(0, 0, rTriang, 16);
 
 	int lBot[20] = {
 	133, 648,
@@ -161,6 +161,48 @@ bool ModulePhysics::Start()
 	282, 672
 	};
 	rBotCol = CreateChain(0, 0, rBot, 20);
+
+	// Colliders for Bouncing
+	int redButton[12] = {
+	64, 490,
+	64, 448,
+	72, 448,
+	77, 454,
+	77, 484,
+	71, 490
+	};
+	redButtonCol = CreateChain(0, 0, redButton, 12, 1);
+
+	int psyduck[16] = {
+	346, 438,
+	334, 442,
+	327, 452,
+	327, 466,
+	332, 476,
+	335, 483,
+	341, 486,
+	347, 489
+	};
+	psyduckCol = CreateChain(0, 0, psyduck, 16, 1);
+
+	int midButtonL[12] = {
+	90, 391,
+	105, 378,
+	124, 373,
+	125, 382,
+	112, 390,
+	97, 396
+	};
+	midButtonLCol = CreateChain(0, 0, midButtonL, 12, 1);
+	int midButtonR[12] = {
+	285, 373,
+	306, 377,
+	320, 391,
+	312, 397,
+	297, 392,
+	284, 384
+	};
+	midButtonRCol = CreateChain(0, 0, midButtonR, 12, 1);
 
 	// Kickers Creation
 	int lKicker[14] = {
@@ -324,80 +366,75 @@ PhysBody* ModulePhysics::CreateBoundary()
 
 	b2ChainShape boundShape;
 
-	b2Vec2* boundVec = new b2Vec2[120 / 2];
+	b2Vec2* boundVec = new b2Vec2[112 / 2];
 	// Boundary Vertex array 
-	int pinballBound[120] = 
-	{
-	265, 717,
-	353, 657,
-	357, 660,
-	373, 650,
-	388, 636,
-	388, 537,
-	380, 518,
-	366, 507,
-	349, 504,
-	349, 419,
-	361, 404,
-	373, 384,
-	383, 354,
-	389, 330,
-	391, 308,
-	394, 283,
-	394, 224,
-	392, 197,
-	387, 166,
-	379, 138,
-	370, 113,
-	385, 133,
-	393, 150,
-	403, 178,
-	409, 206,
-	409, 720,
-	449, 720,
-	449, 187,
-	442, 163,
-	424, 121,
-	403, 91,
-	380, 67,
-	346, 45,
-	307, 26,
-	259, 15,
+	int pinballBound[112] = {
+	144, 785,
+	144, 716,
+	52, 661,
+	19, 637,
+	19, 530,
+	31, 508,
+	49, 499,
+	58, 497,
+	58, 421,
+	50, 408,
+	38, 388,
+	27, 358,
+	17, 311,
+	15, 282,
+	15, 222,
+	18, 197,
+	27, 150,
+	40, 115,
+	61, 83,
+	88, 56,
+	117, 36,
+	144, 24,
 	184, 15,
-	138, 26,
-	104, 45,
-	73, 70,
-	43, 106,
-	26, 147,
-	18, 190,
-	14, 221,
-	14, 283,
-	19, 327,
-	27, 363,
-	40, 393,
-	61, 423,
-	61, 502,
-	40, 509,
-	28, 520,
-	20, 537,
-	20, 633,
-	33, 647,
-	53, 664,
-	56, 655,
-	143, 716,
-	143, 769,
-	266, 769,
-	266, 733
+	257, 15,
+	305, 27,
+	344, 45,
+	370, 62,
+	403, 96,
+	425, 132,
+	438, 162,
+	449, 190,
+	449, 722,
+	409, 722,
+	409, 209,
+	407, 188,
+	394, 151,
+	382, 129,
+	371, 115,
+	376, 134,
+	385, 169,
+	391, 200,
+	393, 226,
+	393, 282,
+	388, 336,
+	375, 375,
+	358, 406,
+	347, 422,
+	348, 497,
+	362, 500,
+	380, 510,
+	388, 528,
+	388, 637,
+	353, 663,
+	264, 716,
+	264, 785,
+	163, 785
 	};
 
 
-	for (uint i = 0; i < 120 / 2; ++i)
+	for (uint i = 0; i < 112 / 2; ++i)
 	{
 		boundVec[i].x = PIXEL_TO_METERS(pinballBound[i * 2 + 0]);
 		boundVec[i].y = PIXEL_TO_METERS(pinballBound[i * 2 + 1]);
 	}
 
-	boundShape.CreateLoop(boundVec, 120 / 2);
+	boundShape.CreateLoop(boundVec, 112 / 2);
 
 	b2FixtureDef boundFixture;
 	boundFixture.shape = &boundShape;

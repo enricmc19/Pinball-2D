@@ -50,6 +50,7 @@ bool ModuleSceneIntro::Start()
 
 	// Audio Load
 	throwFx = App->audio->LoadFx("Assets/Sound/shootFx.wav");
+	flipperFx = App->audio->LoadFx("Assets/Sound/flipperFx.wav");
 	App->audio->PlayMusic("Assets/Sound/city.ogg");
 
 	return ret;
@@ -79,16 +80,7 @@ update_status ModuleSceneIntro::Update()
 	// Kickers Texture Blit + Physics
 	App->renderer->Blit(lKickerTex, 132, 655, NULL, 1.0f, App->physics->lFlipper->GetRotation(), 10, 8);
 	App->renderer->Blit(rKickerTex, 220, 654, NULL, 1.0f, App->physics->rFlipper->GetRotation(), 49, 10);
-	
-	// Slowpoke Animation
-	SDL_Rect slowpokeCurrentFrame = slowpokeAnim->GetCurrentFrame();
-	App->renderer->Blit(slowpokeTex, 76, 228, &slowpokeCurrentFrame);
-	
-	// Collyster Animation
-	SDL_Rect collysterCurrentFrame = collysterAnim->GetCurrentFrame();
-	App->renderer->Blit(collysterTex, 300, 230, &collysterCurrentFrame);
 
-	// SCANCODES
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		App->physics->rFlipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
@@ -107,6 +99,20 @@ update_status ModuleSceneIntro::Update()
 			App->physics->lFlipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
 		}
 	}
+	if ((App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN))
+	{
+		App->audio->PlayFx(flipperFx);
+	}
+
+	// ANIMATIONS
+	// Slowpoke Animation
+	SDL_Rect slowpokeCurrentFrame = slowpokeAnim->GetCurrentFrame();
+	App->renderer->Blit(slowpokeTex, 76, 228, &slowpokeCurrentFrame);
+
+	// Collyster Animation
+	SDL_Rect collysterCurrentFrame = collysterAnim->GetCurrentFrame();
+	App->renderer->Blit(collysterTex, 300, 230, &collysterCurrentFrame);
+
 	return UPDATE_CONTINUE;
 }
 

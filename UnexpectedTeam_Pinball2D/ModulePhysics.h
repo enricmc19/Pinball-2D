@@ -73,6 +73,10 @@ private:
 	PhysBody *lTriangCol, *rTriangCol;
 	PhysBody *lBotCol, *rBotCol;
 
+	PhysBody *redButtonCol;
+	PhysBody *psyduckCol;
+	PhysBody *midButtonLCol, *midButtonRCol;
+
 	// Kickers Definition
 	PhysBody *lFlipper;
 	PhysBody *rFlipper;
