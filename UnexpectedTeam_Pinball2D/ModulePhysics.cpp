@@ -122,7 +122,7 @@ bool ModulePhysics::Start()
 	128, 607,
 	127, 600
 	};
-	lTriangCol = CreateChain(0, 0, lTriang, 16);
+	lTriangCol = CreateChain(0, 0, lTriang, 16,1);
 	int rTriang[16] = {
 	317, 582,
 	317, 546,
@@ -133,7 +133,7 @@ bool ModulePhysics::Start()
 	296, 597,
 	308, 588
 	};
-	rTriangCol = CreateChain(0, 0, rTriang, 16);
+	rTriangCol = CreateChain(0, 0, rTriang, 16,1);
 
 	int lBot[20] = {
 	133, 648,
@@ -193,7 +193,7 @@ bool ModulePhysics::Start()
 	112, 390,
 	97, 396
 	};
-	midButtonLCol = CreateChain(0, 0, midButtonL, 12, 1);
+	midButtonLCol = CreateChain(0, 0, midButtonL, 12, 0);
 	int midButtonR[12] = {
 	285, 373,
 	306, 377,
@@ -202,12 +202,12 @@ bool ModulePhysics::Start()
 	297, 392,
 	284, 384
 	};
-	midButtonRCol = CreateChain(0, 0, midButtonR, 12, 1);
+	midButtonRCol = CreateChain(0, 0, midButtonR, 12, 0);
 
 	// Shellers
-	sheller1 = CreateStaticCircle(206, 142, 19);
-	sheller2 = CreateStaticCircle(153, 194, 19);
-	sheller3 = CreateStaticCircle(260, 194, 19);
+	sheller1 = CreateStaticCircle(206, 142, 19,1);
+	sheller2 = CreateStaticCircle(153, 194, 19,1);
+	sheller3 = CreateStaticCircle(260, 194, 19,1);
 
 	// Kickers Creation
 	int lKicker[14] = {
@@ -231,8 +231,8 @@ bool ModulePhysics::Start()
 	};
 	lFlipper = CreatFlippers(146, 663, lKicker, 14);
 	rFlipper = CreatFlippers(265, 655, rKicker, 16);
-	lJoint = CreateStaticCircle(140, 663, 3);
-	rJoint = CreateStaticCircle(266, 664, 3);
+	lJoint = CreateStaticCircle(140, 663, 3,0);
+	rJoint = CreateStaticCircle(266, 664, 3,0);
 
 	// Left Kicker Joint
 	b2RevoluteJointDef revDef1;
@@ -514,7 +514,7 @@ PhysBody* ModulePhysics::CreatFlippers(int x, int y, int* points, int size)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius, float _restitution)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -525,6 +525,7 @@ PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
 	b2CircleShape shape;
 	shape.m_radius = PIXEL_TO_METERS(radius);
 	b2FixtureDef fixture;
+	fixture.restitution = _restitution;
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
 

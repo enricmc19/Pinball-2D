@@ -88,12 +88,12 @@ update_status ModuleSceneIntro::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 		{
-			App->physics->rFlipper->body->ApplyForce({ 6, 80 }, { 0, 0 }, true);
+			App->physics->rFlipper->body->ApplyForce({ 6, 60 }, { 0, 0 }, true);
 		}
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		App->physics->lFlipper->body->ApplyForce({ 6, 80 }, { 0, 0 }, true);
+		App->physics->lFlipper->body->ApplyForce({ 6, 60 }, { 0, 0 }, true);
 
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 		{

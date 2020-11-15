@@ -58,7 +58,7 @@ private:
 	// Spring Creation
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type);
 	PhysBody* CreatFlippers(int x, int y, int* points, int size);
-	PhysBody* CreateStaticCircle(int x, int y, int radius);
+	PhysBody* CreateStaticCircle(int x, int y, int radius,float _restitution);
 	void CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody);
 	PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float _restitution = 0);
 	
