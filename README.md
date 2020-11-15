@@ -20,6 +20,7 @@ Github Release: https://github.com/enricmc19/Pinball-2D/releases/tag/v1.0
  - LEFT and RIGHT ARROWS to control the Flippers
  - Mantain DOWN ARROW to use the Kicker.
  - F1 to enter Debug Mode
+ - R to Reset the Ball
  
 ## Differences with the Original Game
 
