@@ -26,8 +26,9 @@ update_status ModulePlayer::Update()
 	{
 		player = (App->physics->CreatePlayer(429, 615, 15));
 		ballCreation = false;
+		player->body->SetBullet(true);
 	}
-	player->body->SetBullet(true);
+	
 
 	int playerPosX, playerPosY;
 	player->GetPosition(playerPosX, playerPosY);

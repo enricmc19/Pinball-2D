@@ -35,9 +35,137 @@ bool ModulePhysics::Start()
 	springPivot = CreateRectangle(429, 723, 36, 10, b2_staticBody);
 	CreatePrismaticJoint(spring, springPivot);
 
+	// Colliders Creation
+	int lMiddle[48] = {
+	121, 370,
+	86, 388,
+	72, 363,
+	61, 329,
+	57, 297,
+	57, 214,
+	64, 170,
+	76, 135,
+	92, 107,
+	121, 79,
+	121, 140,
+	109, 160,
+	102, 185,
+	104, 199,
+	116, 214,
+	186, 247,
+	185, 258,
+	102, 249,
+	100, 286,
+	185, 286,
+	184, 293,
+	121, 326,
+	115, 344,
+	120, 359
+	};
+	lMiddleCol = CreateChain(lMiddle, 48);
+	int rMiddle[44] = {
+	285, 366,
+	322, 386,
+	340, 353,
+	350, 300,
+	350, 213,
+	342, 163,
+	326, 120,
+	306, 95,
+	286, 81,
+	286, 139,
+	297, 158,
+	305, 187,
+	300, 206,
+	281, 220,
+	224, 248,
+	224, 256,
+	308, 248,
+	308, 289,
+	223, 289,
+	278, 318,
+	291, 334,
+	294, 344
+	};
+	rMiddleCol = CreateChain(rMiddle, 44);
+
+	int lTop[16] = {
+	166, 68,
+	169, 61,
+	178, 61,
+	181, 68,
+	181, 103,
+	177, 107,
+	169, 107,
+	166, 103
+	};
+	lTopCol = CreateChain(lTop, 16);
+	int rTop[16] = {
+	227, 66,
+	230, 62,
+	239, 62,
+	242, 66,
+	242, 104,
+	239, 107,
+	230, 107,
+	227, 103
+	};
+	rTopCol = CreateChain(rTop, 16);
+
+	int lTriang[16] = {
+	128, 603,
+	99, 544,
+	94, 539,
+	91, 542,
+	91, 583,
+	93, 589,
+	122, 612,
+	128, 608
+	};
+	lTriangCol = CreateChain(lTriang, 16);
+	int rTriang[20] = {
+	308, 545,
+	312, 539,
+	316, 539,
+	319, 544,
+	319, 583,
+	316, 589,
+	286, 611,
+	281, 607,
+	281, 598,
+	305, 551
+	};
+	rTriangCol = CreateChain(rTriang, 20);
+
+	int lBot[20] = {
+	143, 654,
+	77, 610,
+	64, 598,
+	60, 592,
+	60, 534,
+	56, 530,
+	52, 534,
+	52, 618,
+	55, 624,
+	133, 674
+	};
+	lBotCol = CreateChain(lBot, 20);
+	int rBot[20] = {
+	266, 654,
+	333, 608,
+	344, 597,
+	347, 591,
+	347, 534,
+	352, 530,
+	357, 534,
+	357, 618,
+	354, 624,
+	277, 674
+	};
+	rBotCol = CreateChain(rBot, 20);
+
 	// Kickers Creation
-	int lKicker[14] = 
-	{
+	int lKicker[14] = {
 	3, 2,
 	21, 2,
 	56, 6,
@@ -55,7 +183,6 @@ bool ModulePhysics::Start()
 	40, 21,
 	58, 21
 	};
-
 	lFlipper = CreatFlippers(146, 663, lKicker, 14);
 	rFlipper = CreatFlippers(275, 655, rKicker, 14);
 	lJoint = CreateStaticCircle(146, 663, 3);
@@ -184,6 +311,7 @@ bool ModulePhysics::CleanUp()
 
 	return true;
 }
+
 
 //Creation Functions
 PhysBody* ModulePhysics::CreateBoundary()
@@ -406,6 +534,41 @@ PhysBody* ModulePhysics::CreatePlayer(int x, int y, int radius)
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
+
+	return pbody;
+}
+
+PhysBody* ModulePhysics::CreateChain(int* points, int size)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(0, 0);
+
+	b2Body* b = pkmWorld->CreateBody(&body);
+
+	b2ChainShape shape;
+	b2Vec2* p = new b2Vec2[size / 2];
+
+	for (uint i = 0; i < size / 2; ++i)
+	{
+		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
+		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
+	}
+
+	shape.CreateLoop(p, size / 2);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	delete p;
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = 0;
 
 	return pbody;
 }

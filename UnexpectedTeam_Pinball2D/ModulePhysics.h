@@ -60,18 +60,24 @@ private:
 	PhysBody* CreatFlippers(int x, int y, int* points, int size);
 	PhysBody* CreateStaticCircle(int x, int y, int radius);
 	void CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody);
-
+	PhysBody* CreateChain(int* points, int size);
 	
 
 	public:
 	// Ball Creation
 	PhysBody* CreatePlayer(int x, int y, int radius);
 
+	// Map Colliders Definitions
+	PhysBody *lTopCol, *rTopCol;
+	PhysBody *lMiddleCol,*rMiddleCol;
+	PhysBody *lTriangCol, *rTriangCol;
+	PhysBody *lBotCol, *rBotCol;
+
 	// Kickers Definition
-	PhysBody* lFlipper;
-	PhysBody* rFlipper;
-	PhysBody* lJoint;
-	PhysBody* rJoint;
-	b2RevoluteJoint* lFix;
-	b2RevoluteJoint* rFix;
+	PhysBody *lFlipper;
+	PhysBody *rFlipper;
+	PhysBody *lJoint;
+	PhysBody *rJoint;
+	b2RevoluteJoint *lFix;
+	b2RevoluteJoint *rFix;
 };
