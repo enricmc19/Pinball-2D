@@ -34,6 +34,53 @@ bool ModulePhysics::Start()
 	spring = CreateRectangle(429, 710, 36, 15, b2_dynamicBody);
 	springPivot = CreateRectangle(429, 723, 36, 10, b2_staticBody);
 	CreatePrismaticJoint(spring, springPivot);
+
+	// Pivot 0, 0
+	int left_kicker[14] = {
+		0, 10,
+		2, 3,
+		10, 1,
+		69, 6,
+		72, 11,
+		68, 17,
+		5, 18
+	};
+
+	// Pivot 0, 0
+	int right_kicker[14] = {
+		72, 5,
+		65, 0,
+		2, 6,
+		0, 12,
+		4, 16,
+		64, 18,
+		72, 14
+	};
+
+	l_flipper = CreatFlippers(138, 663, left_kicker, 14); //dyn
+	r_flipper = CreatFlippers(270, 663, right_kicker, 14); //dyn
+	l_joint = CreateStaticCircle(138, 663, 3);
+	r_joint = CreateStaticCircle(270, 663, 3);
+
+	b2RevoluteJointDef Def;
+	Def.bodyA = l_flipper->body;
+	Def.bodyB = l_joint->body;
+	Def.collideConnected = false;
+	Def.upperAngle = 25 * DEGTORAD;
+	Def.lowerAngle = -25 * DEGTORAD;
+	Def.enableLimit = true;
+	Def.localAnchorA.Set(PIXEL_TO_METERS(10), PIXEL_TO_METERS(8));
+	l_fix = (b2RevoluteJoint*)pkmWorld->CreateJoint(&Def);
+
+	b2RevoluteJointDef Def2;
+	Def2.bodyA = r_flipper->body;
+	Def2.bodyB = r_joint->body;
+	Def2.collideConnected = false;
+	Def2.upperAngle = 25 * DEGTORAD;
+	Def2.lowerAngle = -25 * DEGTORAD;
+	Def2.enableLimit = true;
+	Def2.localAnchorA.Set(PIXEL_TO_METERS(65), PIXEL_TO_METERS(9));
+	r_fix = (b2RevoluteJoint*)pkmWorld->CreateJoint(&Def2);
 	
 	return true;
 }
@@ -215,6 +262,7 @@ PhysBody* ModulePhysics::CreateBoundary()
 	266, 733
 	};
 
+
 	for (uint i = 0; i < 120 / 2; ++i)
 	{
 		boundVec[i].x = PIXEL_TO_METERS(pinballBound[i * 2 + 0]);
@@ -262,7 +310,63 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 
 	return pbody;
 }
+//Creating flippers function
+PhysBody* ModulePhysics::CreatFlippers(int x, int y, int* points, int size)
+{
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
+	b2Body* b = pkmWorld->CreateBody(&body);
+	b2PolygonShape box;
+
+	b2Vec2* p = new b2Vec2[size / 2];
+
+	for (uint i = 0; i < size / 2; ++i)
+	{
+		p[i].x = PIXEL_TO_METERS(points[i * 2 + 0]);
+		p[i].y = PIXEL_TO_METERS(points[i * 2 + 1]);
+	}
+
+	box.Set(p, size / 2);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->height = pbody->width = 0;
+
+	return pbody;
+}
+//Joints para los flippers
+PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = pkmWorld->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+
+	return pbody;
+}
 void ModulePhysics::CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody)
 {
 
@@ -303,6 +407,7 @@ PhysBody* ModulePhysics::CreatePlayer(int x, int y, int radius)
 
 	return pbody;
 }
+
 
 // PhysBody useful functions
 void PhysBody::GetPosition(int& x, int& y) const

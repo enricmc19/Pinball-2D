@@ -52,7 +52,25 @@ update_status ModuleSceneIntro::Update()
 		App->physics->spring->body->ApplyForce({0,-350}, {0,0}, true);
 		App->audio->PlayFx(throwFx, 0);
 	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		App->physics->r_flipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
 
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+		{
+			App->physics->r_flipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		App->physics->l_flipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+		{
+			App->physics->l_flipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
+		}
+	}
 	return UPDATE_CONTINUE;
 }
 

@@ -57,9 +57,20 @@ private:
 
 	// Spring Creation
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type);
+	PhysBody* CreatFlippers(int x, int y, int* points, int size);
+	PhysBody* CreateStaticCircle(int x, int y, int radius);
 	void CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody);
+
+	
 
 	public:
 	// Ball Creation
 	PhysBody* CreatePlayer(int x, int y, int radius);
+	PhysBody* l_flipper;
+	PhysBody* r_flipper;
+	PhysBody* l_joint;
+	PhysBody* r_joint;
+
+	b2RevoluteJoint* l_fix;
+	b2RevoluteJoint* r_fix;
 };
