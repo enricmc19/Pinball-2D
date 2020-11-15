@@ -35,52 +35,53 @@ bool ModulePhysics::Start()
 	springPivot = CreateRectangle(429, 723, 36, 10, b2_staticBody);
 	CreatePrismaticJoint(spring, springPivot);
 
-	// Pivot 0, 0
-	int left_kicker[14] = {
-		0, 10,
-		2, 3,
-		10, 1,
-		69, 6,
-		72, 11,
-		68, 17,
-		5, 18
+	// Kickers Creation
+	int lKicker[14] = 
+	{
+	3, 2,
+	21, 2,
+	56, 6,
+	63, 10,
+	57, 14,
+	21, 20,
+	3, 20
+	};
+	int rKicker[14] = {
+	58, 2,
+	40, 2,
+	5, 6,
+	-2, 10,
+	5, 14,
+	40, 21,
+	58, 21
 	};
 
-	// Pivot 0, 0
-	int right_kicker[14] = {
-		72, 5,
-		65, 0,
-		2, 6,
-		0, 12,
-		4, 16,
-		64, 18,
-		72, 14
-	};
+	lFlipper = CreatFlippers(146, 663, lKicker, 14);
+	rFlipper = CreatFlippers(275, 655, rKicker, 14);
+	lJoint = CreateStaticCircle(146, 663, 3);
+	rJoint = CreateStaticCircle(278, 655, 3);
 
-	l_flipper = CreatFlippers(138, 663, left_kicker, 14); //dyn
-	r_flipper = CreatFlippers(270, 663, right_kicker, 14); //dyn
-	l_joint = CreateStaticCircle(138, 663, 3);
-	r_joint = CreateStaticCircle(270, 663, 3);
+	// Left Kicker Joint
+	b2RevoluteJointDef revDef1;
+	revDef1.bodyA = lFlipper->body;
+	revDef1.bodyB = lJoint->body;
+	revDef1.collideConnected = false;
+	revDef1.upperAngle = 25 * DEGTORAD;
+	revDef1.lowerAngle = -25 * DEGTORAD;
+	revDef1.enableLimit = true;
+	revDef1.localAnchorA.Set(PIXEL_TO_METERS(10), PIXEL_TO_METERS(8));
+	lFix = (b2RevoluteJoint*)pkmWorld->CreateJoint(&revDef1);
 
-	b2RevoluteJointDef Def;
-	Def.bodyA = l_flipper->body;
-	Def.bodyB = l_joint->body;
-	Def.collideConnected = false;
-	Def.upperAngle = 25 * DEGTORAD;
-	Def.lowerAngle = -25 * DEGTORAD;
-	Def.enableLimit = true;
-	Def.localAnchorA.Set(PIXEL_TO_METERS(10), PIXEL_TO_METERS(8));
-	l_fix = (b2RevoluteJoint*)pkmWorld->CreateJoint(&Def);
-
-	b2RevoluteJointDef Def2;
-	Def2.bodyA = r_flipper->body;
-	Def2.bodyB = r_joint->body;
-	Def2.collideConnected = false;
-	Def2.upperAngle = 25 * DEGTORAD;
-	Def2.lowerAngle = -25 * DEGTORAD;
-	Def2.enableLimit = true;
-	Def2.localAnchorA.Set(PIXEL_TO_METERS(65), PIXEL_TO_METERS(9));
-	r_fix = (b2RevoluteJoint*)pkmWorld->CreateJoint(&Def2);
+	// Right Kicker Joint
+	b2RevoluteJointDef revDef2;
+	revDef2.bodyA = rFlipper->body;
+	revDef2.bodyB = rJoint->body;
+	revDef2.collideConnected = false;
+	revDef2.upperAngle = 25 * DEGTORAD;
+	revDef2.lowerAngle = -25 * DEGTORAD;
+	revDef2.enableLimit = true;
+	revDef2.localAnchorA.Set(PIXEL_TO_METERS(70), PIXEL_TO_METERS(7));
+	rFix = (b2RevoluteJoint*)pkmWorld->CreateJoint(&revDef2);
 	
 	return true;
 }
@@ -310,7 +311,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 
 	return pbody;
 }
-//Creating flippers function
+
 PhysBody* ModulePhysics::CreatFlippers(int x, int y, int* points, int size)
 {
 	b2BodyDef body;
@@ -343,7 +344,7 @@ PhysBody* ModulePhysics::CreatFlippers(int x, int y, int* points, int size)
 
 	return pbody;
 }
-//Joints para los flippers
+
 PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
 {
 	b2BodyDef body;
@@ -367,6 +368,7 @@ PhysBody* ModulePhysics::CreateStaticCircle(int x, int y, int radius)
 
 	return pbody;
 }
+
 void ModulePhysics::CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody)
 {
 

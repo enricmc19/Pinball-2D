@@ -23,10 +23,14 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	// Texture Load
 	pinballRec = new SDL_Rect{ 0,0,490,717 };
 	pinballTex = App->textures->Load("Assets/Textures/pinballTex.png");
 	springTex = App->textures->Load("Assets/Textures/springTex.png");
+	lKickerTex = App->textures->Load("Assets/Textures/lKicker.png");
+	rKickerTex = App->textures->Load("Assets/Textures/rKicker.png");
 
+	// Audio Load
 	throwFx = App->audio->LoadFx("Assets/Sound/shootFx.wav");
 	App->audio->PlayMusic("Assets/Sound/city.ogg");
 
@@ -53,23 +57,28 @@ update_status ModuleSceneIntro::Update()
 		App->physics->spring->body->ApplyForce({0,-230}, {0,0}, true);
 		App->audio->PlayFx(throwFx);
 	}
+
+	// Kickers Texture Blit + Physics
+
+	App->renderer->Blit(lKickerTex, 136, 655, NULL, 2.0f, App->physics->lFlipper->GetRotation(), 10, 8); //I finally fixed it, NO TOUCHY! >:c
+	App->renderer->Blit(rKickerTex, 212, 647, NULL, 2.0f, App->physics->rFlipper->GetRotation(), 70, 7); //Same, NO TOUCHY! >:c
+	
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		App->physics->r_flipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
+		App->physics->rFlipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
 
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 		{
-			App->physics->r_flipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
+			App->physics->rFlipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
 		}
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		App->physics->l_flipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
+		App->physics->lFlipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
 
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 		{
-			App->physics->l_flipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
+			App->physics->lFlipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
 		}
 	}
 	return UPDATE_CONTINUE;

@@ -21,5 +21,8 @@ public:
 
 	SDL_Texture* springTex;
 
+	SDL_Texture* lKickerTex;
+	SDL_Texture* rKickerTex;
+
 	uint throwFx;
 };

@@ -66,11 +66,12 @@ private:
 	public:
 	// Ball Creation
 	PhysBody* CreatePlayer(int x, int y, int radius);
-	PhysBody* l_flipper;
-	PhysBody* r_flipper;
-	PhysBody* l_joint;
-	PhysBody* r_joint;
 
-	b2RevoluteJoint* l_fix;
-	b2RevoluteJoint* r_fix;
+	// Kickers Definition
+	PhysBody* lFlipper;
+	PhysBody* rFlipper;
+	PhysBody* lJoint;
+	PhysBody* rJoint;
+	b2RevoluteJoint* lFix;
+	b2RevoluteJoint* rFix;
 };
