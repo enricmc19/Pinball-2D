@@ -21,5 +21,5 @@ public:
 
 	SDL_Texture* springTex;
 
-	int throwFx;
+	uint throwFx;
 };

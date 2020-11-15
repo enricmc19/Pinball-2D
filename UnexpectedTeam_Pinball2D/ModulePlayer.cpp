@@ -15,7 +15,7 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-	masterBallTex = App->textures->Load("Assets/masterBallTex.png");
+	masterBallTex = App->textures->Load("Assets/Textures/masterBallTex.png");
 	return true;
 }
 
