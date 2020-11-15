@@ -24,7 +24,7 @@ update_status ModulePlayer::Update()
 {
 	if (ballCreation == true)
 	{
-		player = (App->physics->CreatePlayer(429, 615, 15));
+		player = (App->physics->CreatePlayer(429, 615, 13));
 		ballCreation = false;
 		player->body->SetBullet(true);
 	}

@@ -62,7 +62,7 @@ bool ModulePhysics::Start()
 	115, 344,
 	120, 359
 	};
-	lMiddleCol = CreateChain(lMiddle, 48);
+	lMiddleCol = CreateChain(0,0,lMiddle,48);
 	int rMiddle[44] = {
 	285, 366,
 	322, 386,
@@ -87,7 +87,7 @@ bool ModulePhysics::Start()
 	291, 334,
 	294, 344
 	};
-	rMiddleCol = CreateChain(rMiddle, 44);
+	rMiddleCol = CreateChain(0, 0, rMiddle, 44);
 
 	int lTop[16] = {
 	166, 68,
@@ -99,7 +99,7 @@ bool ModulePhysics::Start()
 	169, 107,
 	166, 103
 	};
-	lTopCol = CreateChain(lTop, 16);
+	lTopCol = CreateChain(0, 0, lTop, 16,2);
 	int rTop[16] = {
 	227, 66,
 	230, 62,
@@ -110,32 +110,30 @@ bool ModulePhysics::Start()
 	230, 107,
 	227, 103
 	};
-	rTopCol = CreateChain(rTop, 16);
+	rTopCol = CreateChain(0, 0, rTop, 16,2);
 
 	int lTriang[16] = {
-	128, 603,
-	99, 544,
-	94, 539,
-	91, 542,
+	98, 543,
+	94, 538,
+	91, 543,
 	91, 583,
-	93, 589,
-	122, 612,
-	128, 608
+	96, 587,
+	117, 601,
+	128, 607,
+	127, 600
 	};
-	lTriangCol = CreateChain(lTriang, 16);
-	int rTriang[20] = {
-	308, 545,
-	312, 539,
-	316, 539,
-	319, 544,
-	319, 583,
-	316, 589,
-	286, 611,
-	281, 607,
-	281, 598,
-	305, 551
+	lTriangCol = CreateChain(0, 0, lTriang, 16.2);
+	int rTriang[16] = {
+	317, 582,
+	317, 546,
+	314, 539,
+	309, 544,
+	280, 602,
+	286, 604,
+	296, 597,
+	308, 588
 	};
-	rTriangCol = CreateChain(rTriang, 20);
+	rTriangCol = CreateChain(0, 0, rTriang, 16,2);
 
 	int lBot[20] = {
 	133, 648,
@@ -149,7 +147,7 @@ bool ModulePhysics::Start()
 	60, 629,
 	124, 670
 	};
-	lBotCol = CreateChain(lBot, 20);
+	lBotCol = CreateChain(0, 0, lBot, 20);
 	int rBot[20] = {
 	273, 647,
 	333, 608,
@@ -162,7 +160,7 @@ bool ModulePhysics::Start()
 	354, 624,
 	282, 672
 	};
-	rBotCol = CreateChain(rBot, 20);
+	rBotCol = CreateChain(0, 0, rBot, 20);
 
 	// Kickers Creation
 	int lKicker[14] = {
@@ -539,11 +537,11 @@ PhysBody* ModulePhysics::CreatePlayer(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int* points, int size)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float _restitution)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
-	body.position.Set(0, 0);
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = pkmWorld->CreateBody(&body);
 
@@ -559,8 +557,9 @@ PhysBody* ModulePhysics::CreateChain(int* points, int size)
 	shape.CreateLoop(p, size / 2);
 
 	b2FixtureDef fixture;
-	fixture.shape = &shape;
+	fixture.restitution = _restitution;
 	fixture.density = 1.0f;
+	fixture.shape = &shape;
 
 	b->CreateFixture(&fixture);
 
@@ -570,7 +569,6 @@ PhysBody* ModulePhysics::CreateChain(int* points, int size)
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = 0;
-
 	return pbody;
 }
 

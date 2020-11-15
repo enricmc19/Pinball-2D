@@ -54,7 +54,7 @@ update_status ModuleSceneIntro::Update()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
 	{
-		App->physics->spring->body->ApplyForce({0,-230}, {0,0}, true);
+		App->physics->spring->body->ApplyForce({0,-250}, {0,0}, true);
 		App->audio->PlayFx(throwFx);
 	}
 
@@ -68,12 +68,12 @@ update_status ModuleSceneIntro::Update()
 
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 		{
-			App->physics->rFlipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
+			App->physics->rFlipper->body->ApplyForce({ 6, 80 }, { 0, 0 }, true);
 		}
 	}
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		App->physics->lFlipper->body->ApplyForce({ 10, 80 }, { 0, 0 }, true);
+		App->physics->lFlipper->body->ApplyForce({ 6, 80 }, { 0, 0 }, true);
 
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 		{

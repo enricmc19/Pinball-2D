@@ -60,7 +60,7 @@ private:
 	PhysBody* CreatFlippers(int x, int y, int* points, int size);
 	PhysBody* CreateStaticCircle(int x, int y, int radius);
 	void CreatePrismaticJoint(PhysBody* dynamicBody, PhysBody* staticBody);
-	PhysBody* CreateChain(int* points, int size);
+	PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float _restitution = 0);
 	
 
 	public:
