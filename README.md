@@ -6,7 +6,7 @@ Pokemon Blue Pinball is a fan game made by Unexpected Team for the Box2D-Pinball
 Original Game: https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Pinball
 In this game we implemented "Blue Field" map from the Original Game.
 Github Source/Repository: https://github.com/enricmc19/Pinball-2D
-Github Release: 
+Github Release: https://github.com/enricmc19/Pinball-2D/releases/tag/v1.0
 
 ## Key Features
 
