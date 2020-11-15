@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModuleInput.h"
 #include "ModulePlayer.h"
 
 
@@ -35,6 +36,11 @@ update_status ModulePlayer::Update()
 	App->renderer->Blit(masterBallTex, playerPosX, playerPosY, NULL, 1.0f, player->GetRotation());
 	
 	if (player->body->GetPosition().y * 50 > 720)
+	{
+		player->body->GetWorld()->DestroyBody(player->body);
+		ballCreation = true;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 	{
 		player->body->GetWorld()->DestroyBody(player->body);
 		ballCreation = true;
