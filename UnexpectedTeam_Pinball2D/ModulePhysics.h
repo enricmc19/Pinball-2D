@@ -63,7 +63,7 @@ private:
 	PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, float _restitution = 0);
 	
 
-	public:
+public:
 	// Ball Creation
 	PhysBody* CreatePlayer(int x, int y, int radius);
 
@@ -76,6 +76,9 @@ private:
 	PhysBody *redButtonCol;
 	PhysBody *psyduckCol;
 	PhysBody *midButtonLCol, *midButtonRCol;
+
+	// Shellers
+	PhysBody *sheller1, *sheller2, *sheller3;
 
 	// Kickers Definition
 	PhysBody *lFlipper;

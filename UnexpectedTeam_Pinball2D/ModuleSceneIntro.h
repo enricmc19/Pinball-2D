@@ -39,6 +39,9 @@ private:
 	Animation *collysterAnim = &collyster;
 	SDL_Rect collysterRect;
 
+	// Shellers
+	SDL_Texture *shellerTex;
+
 	// Fx Load
 	uint throwFx;
 	uint flipperFx;

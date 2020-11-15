@@ -204,6 +204,11 @@ bool ModulePhysics::Start()
 	};
 	midButtonRCol = CreateChain(0, 0, midButtonR, 12, 1);
 
+	// Shellers
+	sheller1 = CreateStaticCircle(206, 142, 19);
+	sheller2 = CreateStaticCircle(153, 194, 19);
+	sheller3 = CreateStaticCircle(260, 194, 19);
+
 	// Kickers Creation
 	int lKicker[14] = {
 	3, 2,

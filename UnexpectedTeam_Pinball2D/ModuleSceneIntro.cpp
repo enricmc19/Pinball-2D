@@ -43,6 +43,7 @@ bool ModuleSceneIntro::Start()
 
 	slowpokeTex = App->textures->Load("Assets/Textures/slowpokeAnim.png");
 	collysterTex = App->textures->Load("Assets/Textures/collysterAnim.png");
+	shellerTex = App->textures->Load("Assets/Textures/shellerTex.png");
 
 	springTex = App->textures->Load("Assets/Textures/springTex.png");
 	lKickerTex = App->textures->Load("Assets/Textures/lKicker.png");
@@ -112,6 +113,22 @@ update_status ModuleSceneIntro::Update()
 	// Collyster Animation
 	SDL_Rect collysterCurrentFrame = collysterAnim->GetCurrentFrame();
 	App->renderer->Blit(collysterTex, 300, 230, &collysterCurrentFrame);
+
+	// Sheller Texture Blit
+	// Sheller 1
+	int shellerPosX1, shellerPosY1;
+	App->physics->sheller1->GetPosition(shellerPosX1, shellerPosY1);
+	App->renderer->Blit(shellerTex, shellerPosX1, shellerPosY1, NULL, 1.0f);
+
+	// Sheller 2
+	int shellerPosX2, shellerPosY2;
+	App->physics->sheller2->GetPosition(shellerPosX2, shellerPosY2);
+	App->renderer->Blit(shellerTex, shellerPosX2, shellerPosY2, NULL, 1.0f);
+
+	// Sheller 3
+	int shellerPosX3, shellerPosY3;
+	App->physics->sheller3->GetPosition(shellerPosX3, shellerPosY3);
+	App->renderer->Blit(shellerTex, shellerPosX3, shellerPosY3, NULL, 1.0f);
 
 	return UPDATE_CONTINUE;
 }
