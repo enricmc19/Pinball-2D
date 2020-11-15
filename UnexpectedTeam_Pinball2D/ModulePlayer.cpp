@@ -28,7 +28,7 @@ update_status ModulePlayer::Update()
 		ballCreation = false;
 		player->body->SetBullet(true);
 	}
-	
+
 
 	int playerPosX, playerPosY;
 	player->GetPosition(playerPosX, playerPosY);

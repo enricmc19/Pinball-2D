@@ -59,8 +59,8 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	// Kickers Texture Blit + Physics
-	App->renderer->Blit(lKickerTex, 136, 655, NULL, 2.0f, App->physics->lFlipper->GetRotation(), 10, 8); //I finally fixed it, NO TOUCHY! >:c
-	App->renderer->Blit(rKickerTex, 212, 647, NULL, 2.0f, App->physics->rFlipper->GetRotation(), 70, 7); //Same, NO TOUCHY! >:c
+	App->renderer->Blit(lKickerTex, 132, 655, NULL, 1.0f, App->physics->lFlipper->GetRotation(), 10, 8);
+	App->renderer->Blit(rKickerTex, 220, 654, NULL, 1.0f, App->physics->rFlipper->GetRotation(), 49, 10);
 	
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{

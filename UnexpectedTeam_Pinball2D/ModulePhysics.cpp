@@ -138,20 +138,20 @@ bool ModulePhysics::Start()
 	rTriangCol = CreateChain(rTriang, 20);
 
 	int lBot[20] = {
-	143, 654,
-	77, 610,
-	64, 598,
-	60, 592,
-	60, 534,
-	56, 530,
-	52, 534,
-	52, 618,
-	55, 624,
-	133, 674
+	133, 648,
+	76, 609,
+	64, 597,
+	60, 590,
+	60, 536,
+	56, 531,
+	53, 535,
+	53, 618,
+	60, 629,
+	124, 670
 	};
 	lBotCol = CreateChain(lBot, 20);
 	int rBot[20] = {
-	266, 654,
+	273, 647,
 	333, 608,
 	344, 597,
 	347, 591,
@@ -160,7 +160,7 @@ bool ModulePhysics::Start()
 	357, 534,
 	357, 618,
 	354, 624,
-	277, 674
+	282, 672
 	};
 	rBotCol = CreateChain(rBot, 20);
 
@@ -174,19 +174,20 @@ bool ModulePhysics::Start()
 	21, 20,
 	3, 20
 	};
-	int rKicker[14] = {
-	58, 2,
-	40, 2,
-	5, 6,
-	-2, 10,
-	5, 14,
-	40, 21,
-	58, 21
+	int rKicker[16] = {
+	55, 3,
+	41, 3,
+	20, 6,
+	5, 8,
+	0, 11,
+	6, 13,
+	40, 20,
+	56, 20
 	};
 	lFlipper = CreatFlippers(146, 663, lKicker, 14);
-	rFlipper = CreatFlippers(275, 655, rKicker, 14);
-	lJoint = CreateStaticCircle(146, 663, 3);
-	rJoint = CreateStaticCircle(278, 655, 3);
+	rFlipper = CreatFlippers(265, 655, rKicker, 16);
+	lJoint = CreateStaticCircle(140, 663, 3);
+	rJoint = CreateStaticCircle(266, 664, 3);
 
 	// Left Kicker Joint
 	b2RevoluteJointDef revDef1;
@@ -207,7 +208,7 @@ bool ModulePhysics::Start()
 	revDef2.upperAngle = 25 * DEGTORAD;
 	revDef2.lowerAngle = -25 * DEGTORAD;
 	revDef2.enableLimit = true;
-	revDef2.localAnchorA.Set(PIXEL_TO_METERS(70), PIXEL_TO_METERS(7));
+	revDef2.localAnchorA.Set(PIXEL_TO_METERS(49), PIXEL_TO_METERS(10));
 	rFix = (b2RevoluteJoint*)pkmWorld->CreateJoint(&revDef2);
 	
 	return true;
