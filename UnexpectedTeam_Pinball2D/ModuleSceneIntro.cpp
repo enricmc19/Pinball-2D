@@ -10,6 +10,20 @@
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	pinballRec = nullptr;
+
+	// Slowpoke PushBacks
+	slowpoke.PushBack({ 0,0,50,65 });
+	slowpoke.PushBack({ 53,0,50,65 });
+	slowpoke.PushBack({ 106,0,55,65 });
+	slowpoke.speed = 0.08;
+	slowpokeRect = { 0,0,50,65 };
+
+	// Collyster PushBacks
+	collyster.PushBack({ 0,0,52,63 });
+	collyster.PushBack({ 55,0,52,63 });
+	collyster.PushBack({ 109,0,52,63 });
+	collyster.speed = 0.07;
+	collysterRect = { 0,0,52,63 };
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -26,6 +40,10 @@ bool ModuleSceneIntro::Start()
 	// Texture Load
 	pinballRec = new SDL_Rect{ 0,0,490,717 };
 	pinballTex = App->textures->Load("Assets/Textures/pinballTex.png");
+
+	slowpokeTex = App->textures->Load("Assets/Textures/slowpokeAnim.png");
+	collysterTex = App->textures->Load("Assets/Textures/collysterAnim.png");
+
 	springTex = App->textures->Load("Assets/Textures/springTex.png");
 	lKickerTex = App->textures->Load("Assets/Textures/lKicker.png");
 	rKickerTex = App->textures->Load("Assets/Textures/rKicker.png");
@@ -62,6 +80,15 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(lKickerTex, 132, 655, NULL, 1.0f, App->physics->lFlipper->GetRotation(), 10, 8);
 	App->renderer->Blit(rKickerTex, 220, 654, NULL, 1.0f, App->physics->rFlipper->GetRotation(), 49, 10);
 	
+	// Slowpoke Animation
+	SDL_Rect slowpokeCurrentFrame = slowpokeAnim->GetCurrentFrame();
+	App->renderer->Blit(slowpokeTex, 76, 228, &slowpokeCurrentFrame);
+	
+	// Collyster Animation
+	SDL_Rect collysterCurrentFrame = collysterAnim->GetCurrentFrame();
+	App->renderer->Blit(collysterTex, 300, 230, &collysterCurrentFrame);
+
+	// SCANCODES
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		App->physics->rFlipper->body->ApplyForce({ -10, -80 }, { 0, 0 }, true);
